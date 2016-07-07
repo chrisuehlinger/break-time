@@ -1,12 +1,17 @@
 'use strict';
 const electron = require('electron');
-const app = electron.app;
+const { app, ipcMain } = electron;
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
 // prevent window being garbage collected
-let mainWindow;
+let optionsWindow,
+	options = {
+		breakTime: 1000,
+		breakInterval: 10000
+	},
+	breakInterval = null;
 
 function createOptionsWindow() {
 	const win = new electron.BrowserWindow({
@@ -15,32 +20,42 @@ function createOptionsWindow() {
 	});
 
 	win.loadURL(`file://${__dirname}/options.html`);
+	win.options = options
 
 	return win;
 }
 
-function breakTime() {
+function takeABreak() {
 	const win = new electron.BrowserWindow({
-		fullscreen: true
+		fullscreen: true,
+		focusable: false,
+		frame: false
 	});
 
 	win.loadURL(`file://${__dirname}/popup.html`);
-	setTimeout(function(){
-		win.close();
-	}, 1000);
+	win.options = options
 
 	return win;
 
 }
 
+ipcMain.on('options', (event, newOptions) => {
+	if(newOptions.breakInterval !== options.breakInterval) {
+		clearInterval(breakInterval);
+		breakInterval = setInterval(takeABreak, newOptions.breakInterval);
+	}
+
+	options = newOptions;
+});
+
 
 app.on('activate', () => {
-	if (!mainWindow) {
-		mainWindow = createOptionsWindow();
+	if (!optionsWindow) {
+		optionsWindow = createOptionsWindow();
 	}
 });
 
 app.on('ready', () => {
 	createOptionsWindow();
-	setInterval(breakTime, 10000);
+	breakInterval = setInterval(takeABreak, options.breakInterval);
 });

@@ -2,16 +2,35 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Electron boilerplate</title>
+		<title>Break Options</title>
 		<link rel="stylesheet" href="index.css">
 	</head>
 	<body>
 		<div class="container">
 			<header>
-				<h1>Electron boilerplate</h1>
+				<h1>Break Options</h1>
 			</header>
-			<section class="main"></section>
-			<footer></footer>
+			<section class="main">
+				<form>
+					<label>Break time (seconds): <input id="breakTime" type="number" /></label>
+					<label>Break interval (seconds): <input id="breakInterval" type="number" /></label>
+				</form>
+			</section>
 		</div>
+		<script>
+			window.$ = window.jQuery = require('jquery');
+			const { ipcRenderer, remote } = require('electron');
+			var options = remote.getCurrentWindow().options;
+
+			$('#breakTime').val(options.breakTime);
+			$('#breakInterval').val(options.breakInterval);
+
+			$('input').on('change', (e) => {
+				ipcRenderer.send('options', {
+					breakTime: $('#breakTime').val(),
+					breakInterval: $('#breakInterval').val()
+				});
+			});
+		</script>
 	</body>
 </html>

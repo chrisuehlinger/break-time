@@ -13,5 +13,13 @@
 			<section class="main"></section>
 			<footer></footer>
 		</div>
+		<script>
+			window.$ = window.jQuery = require('jquery');
+			const { ipcRenderer, remote } = require('electron');
+			var options = remote.getCurrentWindow().options;
+			setTimeout(function(){
+				window.close();
+			}, options.breakTime);
+		</script>
 	</body>
 </html>
