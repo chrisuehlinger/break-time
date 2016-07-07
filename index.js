@@ -8,7 +8,7 @@ require('electron-debug')();
 // prevent window being garbage collected
 let optionsWindow,
 	options = {
-		breakTime: 1000,
+		breakTime: 5000,
 		breakInterval: 10000
 	},
 	breakInterval = null;
@@ -26,16 +26,22 @@ function createOptionsWindow() {
 }
 
 function takeABreak() {
-	const win = new electron.BrowserWindow({
-		fullscreen: true,
-		focusable: false,
-		frame: false
+	electron.screen.getAllDisplays().map(function(display){
+		console.log(display);
+		const win = new electron.BrowserWindow({
+			alwaysOnTop: true,
+			frame: false,
+			transparent: true,
+			x: display.bounds.x,
+			y: display.bounds.y,
+			width: display.bounds.width,
+			height: display.bounds.height
+		});
+
+		win.loadURL(`file://${__dirname}/popup.html`);
+		win.options = options;
+
 	});
-
-	win.loadURL(`file://${__dirname}/popup.html`);
-	win.options = options
-
-	return win;
 
 }
 
