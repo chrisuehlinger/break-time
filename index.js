@@ -8,36 +8,39 @@ require('electron-debug')();
 // prevent window being garbage collected
 let mainWindow;
 
-function onClosed() {
-	// dereference the window
-	// for multiple windows store them in an array
-	mainWindow = null;
-}
-
-function createMainWindow() {
+function createOptionsWindow() {
 	const win = new electron.BrowserWindow({
 		width: 600,
 		height: 400
 	});
 
-	win.loadURL(`file://${__dirname}/index.html`);
-	win.on('closed', onClosed);
+	win.loadURL(`file://${__dirname}/options.html`);
 
 	return win;
 }
 
-app.on('window-all-closed', () => {
-	if (process.platform !== 'darwin') {
-		app.quit();
-	}
-});
+function breakTime() {
+	const win = new electron.BrowserWindow({
+		fullscreen: true
+	});
+
+	win.loadURL(`file://${__dirname}/popup.html`);
+	setTimeout(function(){
+		win.close();
+	}, 1000);
+
+	return win;
+
+}
+
 
 app.on('activate', () => {
 	if (!mainWindow) {
-		mainWindow = createMainWindow();
+		mainWindow = createOptionsWindow();
 	}
 });
 
 app.on('ready', () => {
-	mainWindow = createMainWindow();
+	createOptionsWindow();
+	setInterval(breakTime, 10000);
 });
