@@ -2,12 +2,12 @@
   "name": "break-time",
   "productName": "BreakTime",
   "version": "0.0.0",
-  "description": "My flawless app",
+  "description": "Free, cross platform RSI relief software",
   "license": "MIT",
   "repository": "chrisuehlinger/break-time",
   "author": {
     "name": "Chris Uehlinger",
-    "email": "cuehlinger@connectionseducation.com",
+    "email": "chris.uehlinger@gmail.com",
     "url": "chisuehlinger.com"
   },
   "scripts": {
