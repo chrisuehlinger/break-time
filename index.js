@@ -58,7 +58,7 @@ function endBreak(){
 ipcMain.on('options', (event, newOptions) => {
 	if(newOptions.breakInterval !== options.breakInterval) {
 		clearInterval(breakInterval);
-		breakInterval = setInterval(takeABreak, newOptions.breakInterval * 1000);
+		breakInterval = setInterval(takeABreak, newOptions.breakInterval * 60 * 1000);
 	}
 
 	options = newOptions;
@@ -74,5 +74,5 @@ app.on('activate', () => {
 
 app.on('ready', () => {
 	createOptionsWindow();
-	breakInterval = setInterval(takeABreak, options.breakInterval * 1000);
+	breakInterval = setInterval(takeABreak, options.breakInterval * 60 * 1000);
 });
