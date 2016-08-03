@@ -34,14 +34,14 @@
 
 			setTimeout(function(){
 				$('.container').addClass('out');
-			}, options.breakTime - 1000);
+			}, options.breakTime * 1000 - 1000);
 
 			setTimeout(function(){
-				window.close();
-			}, options.breakTime);
+				ipcRenderer.send('end-break');
+			}, options.breakTime * 1000);
 
 			$('.close-button').click(function(){
-				window.close();
+				ipcRenderer.send('end-break');
 			});
 		</script>
 	</body>

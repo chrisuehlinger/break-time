@@ -23,7 +23,7 @@
 			var options = remote.getCurrentWindow().options;
 
 			$('#breakTime').val(options.breakTime);
-			$('#breakInterval').val(options.breakInterval);
+			$('#breakInterval').val(options.breakInterval );
 
 			$('input').on('change', (e) => {
 				ipcRenderer.send('options', {

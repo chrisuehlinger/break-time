@@ -7,6 +7,7 @@ require('electron-debug')();
 
 // prevent window being garbage collected
 let optionsWindow,
+	breakWindows = [],
 	options = {
 		breakTime: 5000,
 		breakInterval: 10000
@@ -26,35 +27,44 @@ function createOptionsWindow() {
 }
 
 function takeABreak() {
-	electron.screen.getAllDisplays().map(function(display){
-		console.log(display);
-		const win = new electron.BrowserWindow({
-			alwaysOnTop: true,
-			frame: false,
-			transparent: true,
-			x: display.bounds.x,
-			y: display.bounds.y,
-			width: display.bounds.width,
-			height: display.bounds.height,
-			parent: optionsWindow
+	if(breakWindows.length = 0) {
+		breakWindows = electron.screen.getAllDisplays().map(function(display){
+			console.log(display);
+			const win = new electron.BrowserWindow({
+				alwaysOnTop: true,
+				frame: false,
+				transparent: true,
+				x: display.bounds.x,
+				y: display.bounds.y,
+				width: display.bounds.width,
+				height: display.bounds.height,
+				parent: optionsWindow
+			});
+
+			win.loadURL(`file://${__dirname}/popup.html`);
+			win.options = options;
+			return win;
 		});
+	}
+}
 
-		win.loadURL(`file://${__dirname}/popup.html`);
-		win.options = options;
-
+function endBreak(){
+	breakWindows.map(function(win){
+		win.close();
 	});
-
+	breakWindows = [];
 }
 
 ipcMain.on('options', (event, newOptions) => {
 	if(newOptions.breakInterval !== options.breakInterval) {
 		clearInterval(breakInterval);
-		breakInterval = setInterval(takeABreak, newOptions.breakInterval);
+		breakInterval = setInterval(takeABreak, newOptions.breakInterval * 1000);
 	}
 
 	options = newOptions;
 });
 
+ipcMain.on('end-break', endBreak);
 
 app.on('activate', () => {
 	if (!optionsWindow) {
@@ -64,5 +74,5 @@ app.on('activate', () => {
 
 app.on('ready', () => {
 	createOptionsWindow();
-	breakInterval = setInterval(takeABreak, options.breakInterval);
+	breakInterval = setInterval(takeABreak, options.breakInterval * 1000);
 });
