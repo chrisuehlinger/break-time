@@ -9,8 +9,8 @@ require('electron-debug')();
 let optionsWindow,
 	breakWindows = [],
 	options = {
-		breakTime: 5000,
-		breakInterval: 10000
+		breakTime: 5,
+		breakInterval: 10
 	},
 	breakInterval = null;
 
@@ -27,7 +27,7 @@ function createOptionsWindow() {
 }
 
 function takeABreak() {
-	if(breakWindows.length = 0) {
+	if(breakWindows.length === 0) {
 		breakWindows = electron.screen.getAllDisplays().map(function(display){
 			console.log(display);
 			const win = new electron.BrowserWindow({

@@ -24,10 +24,10 @@
 			var options = remote.getCurrentWindow().options;
 
 			var $progress = $('.progress-fill'),
-				endTime = Date.now() + options.breakTime;
+				endTime = Date.now() + options.breakTime*1000;
 
 			!function render(){
-				var percentage = 100 * (endTime - Date.now()) / options.breakTime;
+				var percentage = 100 * (endTime - Date.now()) / (options.breakTime*1000);
 				$progress.css('width', percentage + '%');
 				window.requestAnimationFrame(render);
 			}();
