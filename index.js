@@ -1,6 +1,7 @@
 'use strict';
+const path = require('path');
 const electron = require('electron');
-const { app, ipcMain } = electron;
+const { app, ipcMain, Tray, Menu } = electron;
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -8,6 +9,7 @@ require('electron-debug')();
 // prevent window being garbage collected
 let optionsWindow,
 	breakWindows = [],
+	tray = null,
 	options = {
 		breakTime: 5,
 		breakInterval: 10
@@ -15,15 +17,18 @@ let optionsWindow,
 	breakInterval = null;
 
 function createOptionsWindow() {
-	const win = new electron.BrowserWindow({
-		width: 600,
-		height: 400
-	});
+	if(!optionsWindow) {
+		optionsWindow = new electron.BrowserWindow({
+			width: 600,
+			height: 400
+		});
 
-	win.loadURL(`file://${__dirname}/options.html`);
-	win.options = options
-
-	return win;
+		optionsWindow.loadURL(`file://${__dirname}/options.html`);
+		optionsWindow.options = options;
+		optionsWindow.on('close', function(){
+			optionsWindow = null;
+		});
+	}
 }
 
 function takeABreak() {
@@ -38,13 +43,13 @@ function takeABreak() {
 				y: display.bounds.y,
 				width: display.bounds.width,
 				height: display.bounds.height,
-				parent: optionsWindow
+				skipTaskbar: true
 			});
 
 			win.loadURL(`file://${__dirname}/popup.html`);
 			win.options = options;
 			return win;
-		});
+		})
 	}
 }
 
@@ -66,13 +71,25 @@ ipcMain.on('options', (event, newOptions) => {
 
 ipcMain.on('end-break', endBreak);
 
-app.on('activate', () => {
-	if (!optionsWindow) {
-		optionsWindow = createOptionsWindow();
-	}
-});
+app.on('activate', createOptionsWindow);
 
 app.on('ready', () => {
 	createOptionsWindow();
 	breakInterval = setInterval(takeABreak, options.breakInterval * 60 * 1000);
+
+	tray = new Tray(path.join(__dirname, 'icon.jpg'));
+
+	const contextMenu = Menu.buildFromTemplate([
+		{label:'Options', click:createOptionsWindow},
+		{label:'Quit', click: app.quit}
+	]);
+	tray.setContextMenu(contextMenu);
+
+	tray.setToolTip('Break Time');
+
+	tray.on('click', createOptionsWindow);
+});
+
+app.on('window-all-closed', function() {
+
 });
