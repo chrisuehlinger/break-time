@@ -17,6 +17,10 @@ body {
 	overflow: hidden;
 }
 
+.container.out {
+	animation-name: fadeOut;
+}
+
 header {
     margin-top: 40vh;
     text-align: center;
@@ -30,4 +34,38 @@ header {
 	to {
 		opacity: 1;
 	}
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
+	}
+}
+
+.main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100vw;
+}
+
+.progress-bar {
+	width: 500px;
+	height: 10px;
+	border: 1px solid #111;
+}
+
+.progress-fill {
+	height: 10px;
+	background: dodgerblue;
+}
+
+.close-button {
+	display: inline-block;
+	font-size: 18px;
+	margin: 20px;
 }

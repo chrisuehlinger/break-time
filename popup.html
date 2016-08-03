@@ -10,16 +10,39 @@
 			<header>
 				<h1>Time for a break!</h1>
 			</header>
-			<section class="main"></section>
+			<section class="main">
+				<div class="progress-bar">
+					<div class="progress-fill"></div>
+				</div>
+				<button class="close-button">Close</button>
+			</section>
 			<footer></footer>
 		</div>
 		<script>
 			window.$ = window.jQuery = require('jquery');
 			const { ipcRenderer, remote } = require('electron');
 			var options = remote.getCurrentWindow().options;
+
+			var $progress = $('.progress-fill'),
+				endTime = Date.now() + options.breakTime;
+
+			!function render(){
+				var percentage = 100 * (endTime - Date.now()) / options.breakTime;
+				$progress.css('width', percentage + '%');
+				window.requestAnimationFrame(render);
+			}();
+
+			setTimeout(function(){
+				$('.container').addClass('out');
+			}, options.breakTime - 1000);
+
 			setTimeout(function(){
 				window.close();
 			}, options.breakTime);
+
+			$('.close-button').click(function(){
+				window.close();
+			});
 		</script>
 	</body>
 </html>

@@ -35,7 +35,8 @@ function takeABreak() {
 			x: display.bounds.x,
 			y: display.bounds.y,
 			width: display.bounds.width,
-			height: display.bounds.height
+			height: display.bounds.height,
+			parent: optionsWindow
 		});
 
 		win.loadURL(`file://${__dirname}/popup.html`);
