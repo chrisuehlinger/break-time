@@ -28,7 +28,8 @@
   ],
   "build": {
     "win": {
-      "iconUrl": "https://pbs.twimg.com/profile_images/760645731841474560/vQOA1wRT_400x400.jpg"
+      "iconUrl": "https://pbs.twimg.com/profile_images/760645731841474560/vQOA1wRT_400x400.jpg",
+      "msi": false
     }
   },
   "dependencies": {},

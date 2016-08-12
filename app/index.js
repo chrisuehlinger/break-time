@@ -1,3 +1,5 @@
+if(require('electron-squirrel-startup')) return;
+
 'use strict';
 const path = require('path');
 const electron = require('electron');

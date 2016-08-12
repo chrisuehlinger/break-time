@@ -10,8 +10,7 @@
     "email": "chris.uehlinger@gmail.com",
     "url": "chisuehlinger.com"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "files": [
     "index.js",
     "index.html",
@@ -23,8 +22,8 @@
   ],
   "dependencies": {
     "electron-debug": "^1.0.0",
+    "electron-squirrel-startup": "^1.0.0",
     "jquery": "^3.0.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
