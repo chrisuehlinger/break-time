@@ -10,6 +10,9 @@
     "email": "chris.uehlinger@gmail.com",
     "url": "chisuehlinger.com"
   },
+  "bin":{
+    "break-time": "./bin/break-time"
+  },
   "scripts": {
     "install": "cd app && npm i",
     "test": "xo",
@@ -32,12 +35,13 @@
       "msi": false
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "electron-prebuilt": "^1.0.1"
+  },
   "devDependencies": {
     "devtron": "^1.1.0",
     "electron-builder": "^5.25.1",
     "electron-packager": "^7.0.0",
-    "electron-prebuilt": "^1.0.1",
     "xo": "^0.15.0"
   },
   "xo": {
