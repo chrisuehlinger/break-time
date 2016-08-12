@@ -11,9 +11,6 @@
     "url": "chisuehlinger.com"
   },
   "scripts": {
-    "test": "xo",
-    "start": "electron .",
-    "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
   },
   "files": [
     "index.js",
@@ -29,16 +26,5 @@
     "jquery": "^3.0.0"
   },
   "devDependencies": {
-    "devtron": "^1.1.0",
-    "electron-packager": "^7.0.0",
-    "electron-prebuilt": "^1.0.1",
-    "xo": "^0.15.0"
-  },
-  "xo": {
-    "esnext": true,
-    "envs": [
-      "node",
-      "browser"
-    ]
   }
 }
